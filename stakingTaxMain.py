@@ -17,4 +17,4 @@ def receiveStakingInfo():
         return jsonify({'error': 'Internal Server Error'}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='194.163.156.198', port=5000)
