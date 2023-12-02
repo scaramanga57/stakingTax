@@ -5,6 +5,7 @@ from cryptoPrice import *
 import threading
 from loggerConfig import setup_logger
 import socket
+import sys
 
 app = Flask(__name__)
 CORS()  # Enable CORS for all routes
@@ -44,32 +45,29 @@ if __name__ == '__main__':
     logger.info( "Staking Tax starting..."  )
 
     priceCoingecko = priceCoingecko()
-    priceDatabase = mongoPriceDatabase("mongodb+srv://brunowo57:oU0IBrOowEvyrpZd@stakingtax.8z9fjsb.mongodb.net/?retryWrites=true&w=majority",
+    priceDatabase = mongoPriceDatabase( str(sys.arg),
                                        ["EUR", "USD"],
                                        ["Fort", "Tara", "Azero"],
                                        priceCoingecko
                                        )
     
-    #priceDatabase.run()
+    #start database thread
     databaseThread = threading.Thread( target=priceDatabase.run, 
                                        daemon=True,
                                        args=() 
                                        )
     databaseThread.start()
     
-    #while 1:
-    #    time.sleep(1)
-    #    logger.info( "Main loop"  )
+
+    #start flask
     hostname=socket.gethostname()
     IPAddr=socket.gethostbyname(hostname)
-
     app.run(debug=True,
             use_reloader = False,
             host=IPAddr, 
             port=5000
             )
     
-    #databaseThread.join()
     
     
     
