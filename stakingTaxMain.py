@@ -45,7 +45,7 @@ if __name__ == '__main__':
     logger.info( "Staking Tax starting..."  )
 
     priceCoingecko = priceCoingecko()
-    priceDatabase = mongoPriceDatabase( str(sys.arg),
+    priceDatabase = mongoPriceDatabase( sys.argv,
                                        ["EUR", "USD"],
                                        ["Fort", "Tara", "Azero"],
                                        priceCoingecko
