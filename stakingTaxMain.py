@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
     #start flask
     hostname=socket.gethostname()
-    IPAddr=socket.gethostbyname(hostname)
+    IPAddr=socket.gethostbyname(hostname + ".local")
     app.run(debug=True,
             use_reloader = False,
             host=IPAddr, 
