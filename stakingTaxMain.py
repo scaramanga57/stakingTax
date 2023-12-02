@@ -13,6 +13,25 @@ CORS()  # Enable CORS for all routes
 
 logger = setup_logger()
 
+def get_ip_address():
+    try:
+        # Create a socket object
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+        # Connect to an external server (doesn't have to be reachable)
+        s.connect(("8.8.8.8", 80))
+
+        # Get the local IP address from the connected socket
+        ip_address = s.getsockname()[0]
+
+        # Close the socket
+        s.close()
+        logger.info( "My IP address is: %s", ip_address  )
+        return ip_address
+    except socket.error as e:
+        logger.error("Unable to retrieve the IP address.")
+        return None
+
 
 @app.route('/returnFile/')
 def returnFile():
@@ -60,11 +79,9 @@ if __name__ == '__main__':
     
 
     #start flask
-    hostname=socket.gethostname()
-    IPAddr=socket.gethostbyname(hostname + ".local")
     app.run(debug=True,
             use_reloader = False,
-            host=IPAddr, 
+            host=get_ip_address(), 
             port=5000
             )
     
